@@ -2,28 +2,24 @@ package dataBaseServletTask;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
 
 public class FirstFilter implements Filter {
 
     @Override
-    public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
-        HttpServletRequest request = (HttpServletRequest) req;
-        PrintWriter printWriter = res.getWriter();
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+        HttpServletRequest req = (HttpServletRequest) request;
+        HttpServletResponse resp = (HttpServletResponse) response;
 
-        if (validate(request.getParameter("userName"))&&validate(request.getParameter("userSurname"))){
-            chain.doFilter(req,res);
-        }else {
-            printWriter.println("INVALID INPUT");
+        if (req.getMethod().equalsIgnoreCase("POST")){
+            String userName = req.getParameter("userName");
+            String userSurname = req.getParameter("userSurname");
+            if (userName == null || userName.isEmpty() || userSurname == null || userSurname.isEmpty()) {
+                resp.sendRedirect(req.getContextPath() + "/home");
+                return;
+            }
         }
-    }
-
-    protected static boolean validate(String parameter){
-        if (parameter==null||parameter.isEmpty()){
-            return false;
-        }else {
-            return true;
-        }
+            chain.doFilter(request,response);
     }
 }

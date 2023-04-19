@@ -20,7 +20,7 @@
 
     <filter-mapping>
         <filter-name>first-filter</filter-name>
-        <url-pattern>/</url-pattern>
+        <url-pattern>/home</url-pattern>
     </filter-mapping>
 </web-app>
 
